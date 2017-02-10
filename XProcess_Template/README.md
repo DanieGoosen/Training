@@ -171,3 +171,26 @@ The Description will provide a brief description to the user below the Property 
 (More Decorators to come)
 
 # Execution
+
+When the XProcess is executed, the entry point is either one of the following methods:
+
+```cs
+public override void Execute(IXObject item, ProcessInfo processInfo) {
+    execute(item, processInfo);
+}
+
+public override void Execute(XObjectList itemList, ProcessInfo processInfo) {
+    execute(itemList, processInfo);
+}
+```
+
+depending on wht is passed to the XProcess as parameters.
+
+XProcesses are meant to be executed in a sequence, each one responsible for one purpose, and to process the data that it received according to what it should do, and pass it on to another process if needed.
+
+Note the first parameter of the method signatures. It can be either a single ```IXObject``` or a collection of ```IXObject```s stored in a collection wrapper, ```XObjectList```
+
+The behaviour of the XProcess should chagne depending on what is passed to the XProcess. This is your own responsibility to check what is passed in, and according to that and what your Process should do, act accordingly.
+
+## Automated Execution
+Execution of XProcesses can be changed in the ConfigureService.exe by setting the settings of the Scheduler:
