@@ -10,11 +10,15 @@ Place the .zip file in the following location for Visual Studio to recognise the
 
 *Visual Studio will automatically recognise the template and allow you to use it for a new project.*
 
+---
+
 ## Using the Template
 
 The template will create the following project layout:
 
 ![alt-text](../assets/XProcess_Layout.PNG "VS2015 New Project Page")
+
+---
 
 ## References
  The following references are neccesary for XProcessing:
@@ -48,7 +52,8 @@ The template will create the following project layout:
    * **Configuration**:<br> The configuration contains a class that contains all the **Properties** of your XProcess that should be configured. More on this in the [Configuration](#configuration) section.<br><br>
    * **Execution Logic**:<br> When the XProcess is executed, the Entry point will be the ``execute`` method of this XProcess. More on this in the [Execution](#execution) section. <br><br>
 
- 
+---
+
 # Configuration
 
 Below is a layout of a Configuration class. In a property Grid, the below will be displayed as:
@@ -143,6 +148,8 @@ you will see that it is represented like this in the Property Grid:
 
 Here you can set the property's value, and when you change it to something else and save the config, it will be persisted in the Application.saf file.
 
+---
+
 ## Property Decorators
 You will see that with every property that you use in a Property Grid, is decorated with C# attributs (Requires ```System.ComponentModel.Composition``` as a reference for these decorators). The only reason for these decorators are to change the behaviour or appearance of these properties in the Grid. For instance, basic attributes include the Display Name, Description, Default Value, and the Category of the property. All of these are visual attributes. 
 
@@ -169,6 +176,8 @@ The Description will provide a brief description to the user below the Property 
 ```
 
 (More Decorators to come)
+
+---
 
 # Execution
 
@@ -198,7 +207,7 @@ You will note that both the Execute methods eventually call the same private ```
 
 In here, you determine what the parameter was, and depending on that decide what processing needs to be done.
 
-## When ```item``` is a collection (```XObjectList```):
+### When ```item``` is a collection (```XObjectList```):
 The execute method uses *recursion* to iterate through each object in the list, and do processing on the individual object.
 
 ### When ```item``` is a single ```IXObject```
@@ -219,6 +228,8 @@ private void execute(object item, ProcessInfo processInfo, Client.Client client,
 }
 ```
 
+---
+
 ## Automated Execution
 Execution of XProcesses can be changed in the ConfigureService.exe by setting the settings of the Scheduler:
 
@@ -229,6 +240,8 @@ Clicking on the Modal button will open up the Scehduler settings in another wind
 ![alt-text](../assets/BasicConfig_4.PNG "Scheduler Settings")
 
 This Scheduler will execute on the scheduled basis when the Service is installed. When the service is installed and running, it will fire the service with the XProcess/Collection of XProcesses on the scheduled basis.
+
+---
 
 ## Installing the Service
 Modify the Service Settings by clicking on the 'Modify Service' button at the bottom in the ConfigureService.exe applciation:
@@ -243,3 +256,109 @@ The Windows Service settings can be configured in the above screen.
 * **Service Account**: <br> The account that will be used to execute the service. Usually this is a service account provided by ABSA which have sufficient access to the resources the service requires. <br>**NOTE**: This will lock out the service account if it is run with an incorrect password. Be carefull.<br><br>
 * **User Name**: <br> The (full) username of the account that will be used to execute the service<br><br>
 * **Password**: <br> The password of the account that will be used to execute the service.<br><br>
+
+# Web Services
+
+Often XProcess will use a webService in order to do a lookup with the data that have been passed to you. This is achieved by adding a ```wsdl``` to your project as a service reference.
+
+Web Services use XML as a data structure to send and receive data. This is used because XML can easily be read between different environments, as its a set standard, and (mostly) every consumer adheres to these standards.
+
+### Getting your XProcess ready to communicate with the WebService.
+
+A webservice is usually secure, and requires a certificate from the caller in order to process the request and send a response back.
+
+A few steps can be done in the back-end to make it possible to communicate with the webService:
+
+* **Inspector Behaviour**: <br> The Inspector behaviour will be used to intercept the message just before it is sent to the endpoint, as well as just after the response has been received. This can be used to alter messages, or just to log the request/response:<br><br>You will note that the Inspector behaviour implements the IEndpointBehavior interface, but we are only interested in the behaviour we add in the MessageInspector.
+
+```cs
+    class InspectorBehavior : IEndpointBehavior {
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime) {
+            clientRuntime.MessageInspectors.Add(new MessageInspector()); // Add our Messageinspecotr as a Message Inspector.
+        }
+
+        public void AddBindingParameters(ServiceEndpoint endpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters) {
+            //throw new NotImplementedException(); (Not used)
+        }
+
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher) {
+            //throw new NotImplementedException(); (Not used)
+        }
+
+        public void Validate(ServiceEndpoint endpoint) {
+            //throw new NotImplementedException(); (Not used)
+        }
+    }
+    public class MessageInspector : IClientMessageInspector {
+        public void AfterReceiveReply(ref System.ServiceModel.Channels.Message reply, object correlationState) {
+            // log the reply
+            // someLogger.log(reply.ToString());
+            return;
+        }
+
+        public object BeforeSendRequest(ref System.ServiceModel.Channels.Message request, IClientChannel channel) {
+            // log the reply
+            // someLogger.log(request.ToString());
+            return null;
+        }
+    }
+```
+<br>
+
+* **Credential Helper**: <br> 
+The Credentials of the Certificate need to be added to the webClient that wll be used to send data and receive responces.
+<br><br>
+```cs
+public static class CredentialHelper {
+    public static ClientCredentials GetClientCredentialsByThumbprint(string thumbprint) {
+        var store = new X509Store(StoreName.TrustedPeople, StoreLocation.LocalMachine);
+
+        try {
+            store.Open(OpenFlags.ReadOnly);
+            var certs = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, true);
+            var clientCred = new ClientCredentials();
+            clientCred.ClientCertificate.Certificate = certs[0];
+            clientCred.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            clientCred.ServiceCertificate.Authentication.TrustedStoreLocation = StoreLocation.LocalMachine;
+            return clientCred;
+        }
+        catch (Exception ex) {
+            throw new Exception("Error while getting certificate - " + ex.Message);
+        }
+        finally {
+            store.Close();
+        }
+    }
+}
+```
+in the above, we are doing quite a few things:
+* Getting the store where the certificate can be found for authentication between your service and the WebService.
+* Open the store for reading from it
+* Find the certificate via thumbprint
+* Return the configured Client Credentials.
+
+This Credential Manager 'inserts' the Certificate found on the computer the service is running on to the Web Client to authenticate requests (See Initialze Client section below)
+<br>
+
+* **Initialize Client**: <br>The web Client needs to be initialized with the correct certificate, as well as the correct Security Binding (Http/Https) 
+```cs
+private void InitializeClient(ILogger logger)
+{
+    var bb = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+    bb.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
+    logger.WriteInfo(this, "Getting Credentials for thumbprint: {0}".FormatString(properties.ThumbPrint));
+    var cred = CredentialHelper.GetClientCredentialsByThumbprint(properties.ThumbPrint); // set the thumbprint using the CredentialHelper
+    if (cred == null)
+        logger.WriteError(this, "No credentials found for this thumbprint. Please make sure the correct certificate is installed.");
+    logger.WriteInfo(this, "Creating new instance of web client for endpoint: {0}".FormatString(properties.Endpoint));
+
+    webClient = new CreateClient.CIcreateClientV9PortClient(bb, new EndpointAddress(new Uri(properties.Endpoint)));
+    webClient.Endpoint.Behaviors.Clear();   // Clear all previous behaviours, as this is initializing the client
+    webClient.Endpoint.Behaviors.Add(cred); // Add the credentials to the behaviours
+    webClient.Endpoint.Behaviors.Add(new InspectorBehavior()); // Add the InspecorBehaviour to intercept messages
+}
+```
+
+With these steps in place, you should be able to send and receive requests to the WebService, if you have the Certificate installed on your machine. 
+<br><br>
+**Note**: Its easier to test the xml of a webService using soap, an application used to send web Requests using a wsdl.
