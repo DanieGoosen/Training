@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationRequirements xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Sybrin10.Application">
+  <Items>
+    <ApplicationRequirementItem>
+      <Category></Category>
+      <DefaultExportName></DefaultExportName>
+      <Description>Connection Properties</Description>
+      <Extendable>false</Extendable>
+      <Interface>Sybrin10.Kernel.IProperties</Interface>
+      <Key>Connection</Key>
+    </ApplicationRequirementItem>
+    <ApplicationRequirementItem>
+      <Category>Services</Category>
+      <DefaultExportName></DefaultExportName>
+      <Description>Service</Description>
+      <Extendable>true</Extendable>
+      <Interface>Sybrin10.Windows.ISybrinService</Interface>
+      <Key>Service</Key>
+    </ApplicationRequirementItem>
+    <ApplicationRequirementItem>
+      <Category></Category>
+      <DefaultExportName></DefaultExportName>
+      <Description>Logging Tool</Description>
+      <Extendable>false</Extendable>
+      <Interface>Sybrin10.Kernel.ILogger</Interface>
+      <Key>Logger</Key>
+    </ApplicationRequirementItem>
+    <ApplicationRequirementItem>
+      <Category></Category>
+      <DefaultExportName></DefaultExportName>
+      <Description>Notification Tool</Description>
+      <Extendable>false</Extendable>
+      <Interface>Sybrin10.IO.Notification.INotification</Interface>
+      <Key>NotifyTool</Key>
+    </ApplicationRequirementItem>
+  </Items>
+</ApplicationRequirements>
