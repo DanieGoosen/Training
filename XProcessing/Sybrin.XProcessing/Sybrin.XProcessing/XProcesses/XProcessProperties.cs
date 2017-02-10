@@ -9,6 +9,8 @@ using System.ComponentModel;
 using Sybrin10.Kernel.Attributes;
 using System.Drawing.Design;
 using Sybrin.Client.Attributes;
+using System.Diagnostics;
+using Sybrin.XProcessing.Data;
 
 namespace Sybrin.XProcessing {
     public class XProcessProperties : CustomDescriptorBase {
@@ -19,41 +21,98 @@ namespace Sybrin.XProcessing {
 
         #region Properties
 
-        #region Enabled
-        private bool enabled = true;
+        private string fileName = "";
         /// <summary>
-        /// Gets or sets whether the Properties are enabled or not
+        /// Gets or sets the Location to the File name to be read
         /// </summary>
-        [Category("1 - General"), Description("Sets whether the Properties are enabled or not")]
-        [DefaultValue("True")]
-        [DisplayName("1 - Enabled")]
-        public bool Enabled {
-            get { return enabled; }
+        [Category("1 - General"), Description("Sets the Location to the File name to be read")]
+        [DefaultValue("")]
+        [DisplayName("1 - File Name")]
+        public string FileName {
+            [DebuggerNonUserCode]
+            get { return this.fileName; }
+            [DebuggerNonUserCode]
             set {
-                if (enabled != value) {
-                    enabled = value;
-                }
-            }
-        }
-        #endregion Enabled
-
-        private string helloWorldProperty = "Hello World";
-        /// <summary>
-        /// Gets or sets the Hello World string
-        /// </summary>
-        [Category("1 - General"), Description("Sets the Hello World string")]
-        [DefaultValue("Hello World!")]
-        [DisplayName("My New property")]
-        public string HelloWorldProperty {
-            get { return this.helloWorldProperty; }
-            set {
-                if (this.helloWorldProperty != value) {
-                    this.helloWorldProperty = value;
+                if (this.fileName != value) {
+                    this.fileName = value;
                 }
             }
         }
 
+        private string nameProperty = "Idx1";
+        /// <summary>
+        /// Gets or sets the Property uin the IXObject where the Name will be saved
+        /// </summary>
+        [Category("1 - General"), Description("Sets the Property uin the IXObject where the Name will be saved")]
+        [DefaultValue("Idx1")]
+        [DisplayName("2.1 - Name Property")]
+        public string NameProperty {
+            [DebuggerNonUserCode]
+            get { return this.nameProperty; }
+            [DebuggerNonUserCode]
+            set {
+                if (this.nameProperty != value) {
+                    this.nameProperty = value;
+                }
+            }
+        }
 
+        private string surnameproperty = "Idx2";
+        /// <summary>
+        /// Gets or sets the pdsarsdf
+        /// </summary>
+        [Category("1 - General"), Description("Sets the pdsarsdf")]
+        [DefaultValue("Idx2")]
+        [DisplayName("2.2 Surname Property")]
+        public string SurnameProperty {
+            [DebuggerNonUserCode]
+            get { return this.surnameproperty; }
+            [DebuggerNonUserCode]
+            set {
+                if (this.surnameproperty != value) {
+                    this.surnameproperty = value;
+                }
+            }
+        }
+
+        private Student student = new Student();
+        /// <summary>
+        /// Gets or sets the description
+        /// </summary>
+        [Category("1 - General"), Description("Sets the description")]
+        [DefaultValue("")]
+        [DisplayName("4 - My Stuydent")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public Student Student {
+            [DebuggerNonUserCode]
+            get { return this.student; }
+            [DebuggerNonUserCode]
+            set {
+                if (this.student != value) {
+                    this.student = value;
+                }
+            }
+        }
+
+        private Students students = new Students();
+        /// <summary>
+        /// Gets or sets the description
+        /// </summary>
+        [Category("1 - General"), Description("Sets the description")]
+        [DefaultValue("")]
+        [DisplayName("4.2 - Students")]
+        [Editor(typeof(DescriptiveCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(TypeConverter))]
+        public Students Students {
+            [DebuggerNonUserCode]
+            get { return this.students; }
+            [DebuggerNonUserCode]
+            set {
+                if (this.students != value) {
+                    this.students = value;
+                }
+            }
+        }
 
         #endregion Properties
 
@@ -71,7 +130,7 @@ namespace Sybrin.XProcessing {
         #region Methods
 
         public override string ToString() {
-            return string.Format("(Sybrin.XProcessing, Configured = {0})", Enabled);
+            return string.Format("(Sybrin.XProcessing)");
         }
 
         #endregion Methods

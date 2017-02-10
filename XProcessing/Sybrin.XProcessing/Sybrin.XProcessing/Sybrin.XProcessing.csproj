@@ -114,13 +114,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Student.cs" />
     <Compile Include="XProcesses\XProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XProcesses\XProcessProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base Classes\" />
-    <Folder Include="Data\" />
     <Folder Include="Forms\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Tools\" />
@@ -137,9 +137,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>if /I "$(ConfigurationName)" == "Debug" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
-if /I "$(ConfigurationName)" == "Configure" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
-if /I "$(ConfigurationName)" == "Release" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
+    <PreBuildEvent>rem if /I "$(ConfigurationName)" == "Debug" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
+rem if /I "$(ConfigurationName)" == "Configure" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
+rem if /I "$(ConfigurationName)" == "Release" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
 if /I "$(ConfigurationName)" == "Jenkins" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\Jenkins\Sybrin10" "C:\Jenkins\Sybrin7" /v
 </PreBuildEvent>
   </PropertyGroup>

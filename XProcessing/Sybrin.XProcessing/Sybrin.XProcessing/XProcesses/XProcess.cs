@@ -10,10 +10,13 @@ using System.ComponentModel;
 using Sybrin10.Kernel.BaseClasses;
 using Sybrin10.Kernel;
 using Sybrin10.Extensions;
+using Sybrin.Dynamic;
+using System.IO;
+using Sybrin.Extensions;
 
 namespace Sybrin.XProcessing {
     [Export("Sybrin.XProcessing", typeof(IXProcess))]
-    [ExportMetadata("Description", "My XProcess")]
+    [ExportMetadata("Description", "My File Loader")]
     public class XProcess : XProcessBase {
         #region Constructors
 
@@ -101,12 +104,11 @@ namespace Sybrin.XProcessing {
             try {
                 result.StartTimer();
 
-                if (properties.Enabled) {
-                    logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
-                    execute(item, processInfo, client, logger);
-                    result.ResultType = ResultType.Completed;
-                } else
-                    logger.WriteDebug(this, string.Format("{0} is Disabled", this));
+                "This should be logged to the SimpleLogs Folder".SimpleLog("My XProcess");
+
+                logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
+                execute(item, processInfo, client, logger);
+                result.ResultType = ResultType.Completed;
             } catch (Exception ex) {
                 result.ResultType = ResultType.Failed;
                 logger.WriteError(this, ex);
@@ -119,16 +121,47 @@ namespace Sybrin.XProcessing {
         #endregion void execute(object item, ProcessInfo processInfo)
 
         private void execute(object item, ProcessInfo processInfo, Client.Client client, ILogger logger) {
-            // Executes each item in the XObjectList recursively
-            if (item is XObjectList) {
-                (item as XObjectList).ForEach(i => execute(i, processInfo, client, logger));
-                return;
-            }
 
-            // Processing of the individual XItem item starts here
-            var xItem = item as IXObject;
+            logger.WriteDebug("My XProcess", "Starting Process...");
+            //// Executes each item in the XObjectList recursively
+            //if (item is XObjectList) {
+            //    (item as XObjectList).ForEach(i => execute(i, processInfo, client, logger));
+            //    return;
+            //}
 
-            // Do processing here.
+            //// Processing of the individual XItem item starts here
+            //var xItem = item as IXObject;
+            var originalList = item as XObjectList;
+
+
+            logger.WriteDebug("My XProcess", string.Format("Reading File Contents {0}...", properties.FileName));
+            var lines = File.ReadAllLines(properties.FileName);
+            logger.WriteDebug("My XProcess", string.Format("Contents read {0} Lines...", lines.Length));
+
+            int counter = 0;
+
+            lines.ForEach(line => {
+                if (counter != 0) {
+
+                    var values = line.Split(',');
+                    var wrapper = new AllocItemWrapper();
+
+                    var newItem = 1.CreateAllocItem(client, Common.UpdateFlags.Insert);
+                    newItem.GetField("Idx1").Value = values[0];
+                    newItem.GetField("Idx2").Value = values[1];
+
+                    wrapper.AllocItem = newItem;
+
+                    logger.WriteDebug("My XProcess", string.Format("Adding new Wrapper to ItemList {0}", wrapper));
+                    originalList.Add(wrapper);
+
+                    //var sql = string.Format("INSERT INTO iwfTest (Idx1, Idx2) VALUES ('{0}', '{1}')", values[0], values[1]);
+
+                    //client.ExecuteSqlString(sql);
+                }
+                ++counter;
+            });
+            
         }
 
         #region ToString()
