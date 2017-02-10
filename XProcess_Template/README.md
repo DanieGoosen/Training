@@ -192,5 +192,54 @@ Note the first parameter of the method signatures. It can be either a single ```
 
 The behaviour of the XProcess should chagne depending on what is passed to the XProcess. This is your own responsibility to check what is passed in, and according to that and what your Process should do, act accordingly.
 
+---
+
+You will note that both the Execute methods eventually call the same private ```execute``` method. This execute method can accept both ```XObjectList``` and ```IXObject``` as parameters, as its first parameter is of type ```object```
+
+In here, you determine what the parameter was, and depending on that decide what processing needs to be done.
+
+## When ```item``` is a collection (```XObjectList```):
+The execute method uses *recursion* to iterate through each object in the list, and do processing on the individual object.
+
+### When ```item``` is a single ```IXObject```
+It will skip the if statement, and only do normal processing as if it was a single item in the collection.
+
+```cs
+private void execute(object item, ProcessInfo processInfo, Client.Client client, ILogger logger) {
+    // Executes each item in the XObjectList recursively
+    if (item is XObjectList) {
+        (item as XObjectList).ForEach(i => execute(i, processInfo, client, logger));
+        return;
+    }
+
+    // Processing of the individual XItem item starts here
+    var xItem = item as IXObject;
+
+    // Do processing here.
+}
+```
+
 ## Automated Execution
 Execution of XProcesses can be changed in the ConfigureService.exe by setting the settings of the Scheduler:
+
+![alt-text](../assets/BasicConfig_3.PNG "Scheduler")
+
+Clicking on the Modal button will open up the Scehduler settings in another window:
+
+![alt-text](../assets/BasicConfig_4.PNG "Scheduler Settings")
+
+This Scheduler will execute on the scheduled basis when the Service is installed. When the service is installed and running, it will fire the service with the XProcess/Collection of XProcesses on the scheduled basis.
+
+## Installing the Service
+Modify the Service Settings by clicking on the 'Modify Service' button at the bottom in the ConfigureService.exe applciation:
+
+![alt-text](../assets/BasicConfig_5.PNG "Service Settings")
+
+The Windows Service settings can be configured in the above screen. 
+
+* **Service Name**: <br> The name of the service that will be used in Windows' Services window.<br><br>
+* **Display Name**: <br> The name that will be Displayed as in Windows' Services window.<br><br>
+* **Description**: <br> The description of the service in Windows' Services window.<br><br>
+* **Service Account**: <br> The account that will be used to execute the service. Usually this is a service account provided by ABSA which have sufficient access to the resources the service requires. <br>**NOTE**: This will lock out the service account if it is run with an incorrect password. Be carefull.<br><br>
+* **User Name**: <br> The (full) username of the account that will be used to execute the service<br><br>
+* **Password**: <br> The password of the account that will be used to execute the service.<br><br>
