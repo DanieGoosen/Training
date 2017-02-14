@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sybrin.CustomFileLoader", "Sybrin.CustomFileLoader\Sybrin.CustomFileLoader.csproj", "{444BEDF4-F408-4C89-96E3-5B446EF5F135}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Configure|Any CPU = Configure|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Jenkins|Any CPU = Jenkins|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Configure|Any CPU.ActiveCfg = Configure|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Configure|Any CPU.Build.0 = Configure|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444BEDF4-F408-4C89-96E3-5B446EF5F135}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

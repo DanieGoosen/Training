@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceInstall xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Sybrin10.Application">
+  <Description>Sybrin.CustomFileLoader Description</Description>
+  <DisplayName>Sybrin.CustomFileLoader</DisplayName>
+  <ServiceAccount>LocalSystem</ServiceAccount>
+  <ServiceName>Sybrin.CustomFileLoader</ServiceName>
+  <UserName></UserName>
+  <UserPassword></UserPassword>
+</ServiceInstall>
