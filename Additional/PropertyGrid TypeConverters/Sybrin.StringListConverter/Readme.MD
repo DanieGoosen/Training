@@ -36,3 +36,26 @@ public override StandardValuesCollection GetStandardValues(ITypeDescriptorContex
     return new StandardValuesCollection(myList);
 }
 ```
+
+> Now you have all the logic for the Typeconverter, now to use this TypeConverter in your Property Grid:
+
+```cs
+private string listValue = "";
+/// <summary>
+/// Gets or sets the value selected from a custom dropdown.
+/// </summary>
+[Category("1 - General"), Description("Sets the value selected from a custom dropdown.")]
+[DefaultValue("")]
+[DisplayName("2 - Custom List Dropdown")]
+[TypeConverter(typeof(MyConverter))]    // Use your Custom TypeConverter over here to change behaviour on the PropertyGrid.
+public string ListValue {
+    [DebuggerNonUserCode]
+    get { return this.listValue; }
+    [DebuggerNonUserCode]
+    set {
+        if (this.listValue != value) {
+            this.listValue = value;
+        }
+    }
+}
+```
