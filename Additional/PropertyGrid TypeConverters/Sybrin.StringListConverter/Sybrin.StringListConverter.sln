@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sybrin.StringListConverter", "Sybrin.StringListConverter\Sybrin.StringListConverter.csproj", "{471B1D46-D539-47ED-AF76-F8D458AFC545}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Configure|Any CPU = Configure|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Jenkins|Any CPU = Jenkins|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Configure|Any CPU.ActiveCfg = Configure|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Configure|Any CPU.Build.0 = Configure|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{471B1D46-D539-47ED-AF76-F8D458AFC545}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

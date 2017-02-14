@@ -1,18 +1,19 @@
 ﻿using Sybrin10.Dynamic;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Sybrin10.Attributes;
 using System.ComponentModel;
 using Sybrin10.Kernel.BaseClasses;
 using Sybrin10.Kernel;
 using Sybrin10.Extensions;
-using System.Windows;
-using System.Threading;
-using Sybrin.XDisplayForm.Views;
-using Sybrin.XDisplayForm.ViewModels;
 
-namespace Sybrin.XDisplayForm {
-    [Export("Sybrin.XDisplayForm", typeof(IXProcess))]
-    [ExportMetadata("Description", "DisplayForm XProcess")]
+namespace Sybrin.StringListConverter {
+    [Export("Sybrin.StringListConverter", typeof(IXProcess))]
+    [ExportMetadata("Description", "ListConverter XProcess")]
     public class XProcess : XProcessBase {
         #region Constructors
 
@@ -22,8 +23,6 @@ namespace Sybrin.XDisplayForm {
         #endregion Constructors
 
         #region Properties
-
-        public ILogger Logger { get; set; }
 
         #region Name
         private string name = string.Empty;
@@ -97,95 +96,39 @@ namespace Sybrin.XDisplayForm {
             processInfo.Results.Add(result);
 
             var client = processInfo.GetValueInstance<Client.Client>(c => c.LoggedOn);
-            Logger = processInfo.GetValueInstance<ILogger>() ?? Core.GetObjectInstance<ILogger>();
+            var logger = processInfo.GetValueInstance<ILogger>();
 
             try {
                 result.StartTimer();
 
                 if (properties.Enabled) {
-                    Logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
-                    execute(item, processInfo, client, Logger);
+                    logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
+                    execute(item, processInfo, client, logger);
                     result.ResultType = ResultType.Completed;
                 } else
-                    Logger.WriteDebug(this, string.Format("{0} is Disabled", this));
+                    logger.WriteDebug(this, string.Format("{0} is Disabled", this));
             } catch (Exception ex) {
                 result.ResultType = ResultType.Failed;
-                Logger.WriteError(this, ex);
+                logger.WriteError(this, ex);
                 throw ex;
             } finally {
-                Logger.WriteDebug(this, string.Format("XProcess Stopped."));
+                logger.WriteDebug(this, string.Format(""));
                 result.StopTimer();
             }
         }
         #endregion void execute(object item, ProcessInfo processInfo)
 
         private void execute(object item, ProcessInfo processInfo, Client.Client client, ILogger logger) {
-            // I don't care about any of the information passed to this XProcess, I just want to show a form.
-
-            // Start an instance of System.Windows.Application if it doesnt already exist.
-            startApplication();
-            var windowThread = createThread(ApartmentState.STA);
-
-            Logger.WriteDebug(this, "Starting Thread");
-            windowThread.Start();
-
-            keepAlive(windowThread);
-        }
-
-        private void keepAlive(Thread windowThread) {
-            Logger.WriteDebug(this, "Keeping Thread alive while the Window is open...");
-            while (windowThread.IsAlive) {
-                // wait for the thread to be finished
-                Thread.Sleep(100);
-            }
-            Logger.WriteDebug(this, "Thread Stopped");
-        }
-
-        private Thread createThread(ApartmentState apartmentState) {
-
-            Logger.WriteDebug(this, $"Creating Window ({apartmentState}) Thread...");
-            Thread windowThread = new Thread(() => {
-                // Create an instance of a new window.
-                var window = new MainWindow();
-                // This window needs some content, WPF Knowledge is applied here to 
-                // add an existing component as content, together with a binding to 
-                // its datacontext.
-                var mainVM = new MainVM() { Title = "Title set through the DataContext of the View (Binding Works!)" };
-                window.DataContext = mainVM;
-                
-                // Subscribe to the Closed event of the Window and handle any disposing of objects, logging, etc.
-                window.Closed += (s, e) => {
-                    Logger.WriteDebug(this, "Window Closed");
-                };
-                window.ShowDialog();
-            });
-
-            // Change the thread to be Single Threaded Apartment for the window to show.
-            windowThread.SetApartmentState(ApartmentState.STA);
-            return windowThread;
-        }
-
-        private void startApplication() {
-            // Requires the following References to be added:
-            //  * PresentationCore
-            //  * PresentationFramework
-            //  * System.Xaml
-            //  * WindowsBase
-            try {
-
-                if (Application.Current == null) {
-                    Logger.WriteDebug(this, "Application is null, attempting to create an instance...");
-                    new Application() {
-                        ShutdownMode = ShutdownMode.OnExplicitShutdown
-                    };
-                    Logger.WriteDebug(this, "Application Created.");
-                }
-            } catch (Exception ex) {
-                var newEx = new Exception("Failed to create an instance of the Application", ex);
-                Logger.WriteError(this, newEx);
-                throw newEx;
+            // Executes each item in the XObjectList recursively
+            if (item is XObjectList) {
+                (item as XObjectList).ForEach(i => execute(i, processInfo, client, logger));
+                return;
             }
 
+            // Processing of the individual XItem item starts here
+            var xItem = item as IXObject;
+
+            // Do processing here.
         }
 
         #region ToString()
