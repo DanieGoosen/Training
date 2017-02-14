@@ -54,6 +54,10 @@ When a DML of 3 is specified, three nested levels should be created, etc.
 
 Let the XProcess pop up with a window to prompt the user to start the process, with a window similar to the following:
 
+> **Note**: Displaying a form in an XProcess can only be done when debugging, or launching the XProcess through the front-end, such as through WindowsUI or Sybrin.IW. The screen will not launch when the servie is running in the background as a Windows Service.
+
+> See the Project in the Additional Section ([Here](https://github.com/XcyTheR101/Training/tree/master/Additional/Displaying%20Forms)) on how to launch windows through XProcessing.
+
 The window should be created in WPF, see the WPF example in the following Repository : [MVVM Repo](https://github.com/XcyTheR101/MVVM)
 
 ![](./assets/Example.PNG)

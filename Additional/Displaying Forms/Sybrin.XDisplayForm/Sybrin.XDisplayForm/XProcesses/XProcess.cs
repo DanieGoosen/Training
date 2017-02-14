@@ -1,11 +1,6 @@
 ﻿using Sybrin10.Dynamic;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Sybrin10.Attributes;
 using System.ComponentModel;
 using Sybrin10.Kernel.BaseClasses;
 using Sybrin10.Kernel;
@@ -27,6 +22,8 @@ namespace Sybrin.XDisplayForm {
         #endregion Constructors
 
         #region Properties
+
+        public ILogger Logger { get; set; }
 
         #region Name
         private string name = string.Empty;
@@ -100,23 +97,23 @@ namespace Sybrin.XDisplayForm {
             processInfo.Results.Add(result);
 
             var client = processInfo.GetValueInstance<Client.Client>(c => c.LoggedOn);
-            var logger = processInfo.GetValueInstance<ILogger>();
+            Logger = processInfo.GetValueInstance<ILogger>() ?? Core.GetObjectInstance<ILogger>();
 
             try {
                 result.StartTimer();
 
                 if (properties.Enabled) {
-                    logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
-                    execute(item, processInfo, client, logger);
+                    Logger.WriteDebug(this, string.Format("Initiating XProcess: {0}", this));
+                    execute(item, processInfo, client, Logger);
                     result.ResultType = ResultType.Completed;
                 } else
-                    logger.WriteDebug(this, string.Format("{0} is Disabled", this));
+                    Logger.WriteDebug(this, string.Format("{0} is Disabled", this));
             } catch (Exception ex) {
                 result.ResultType = ResultType.Failed;
-                logger.WriteError(this, ex);
+                Logger.WriteError(this, ex);
                 throw ex;
             } finally {
-                logger.WriteDebug(this, string.Format(""));
+                Logger.WriteDebug(this, string.Format("XProcess Stopped."));
                 result.StopTimer();
             }
         }
@@ -127,33 +124,40 @@ namespace Sybrin.XDisplayForm {
 
             // Start an instance of System.Windows.Application if it doesnt already exist.
             startApplication();
-
+            Logger.WriteDebug(this, "Creating Window (STA) Thread...");
             Thread windowThread = new Thread(() => {
-                // Create an instance of a new window.
-                Window window = new Window();
-                window.Width = 800;
-                window.Height = 600;
-                // This window needs some content, WPF Knowledge is applied here to 
-                // add an existing component as content, together with a binding to 
-                // its datacontext.
-                var mainView = new MainView();
+            // Create an instance of a new window.
+            Window window = new Window();
+            window.Width = 800;
+            window.Height = 600;
+            // This window needs some content, WPF Knowledge is applied here to 
+            // add an existing component as content, together with a binding to 
+            // its datacontext.
+            var mainView = new MainView();
 
-                var mainVM = new MainVM() { Title = "Binding Works!"};
+            var mainVM = new MainVM() { Title = "Binding Works!" };
 
-                mainView.DataContext = mainVM;
+            mainView.DataContext = mainVM;
 
-                window.Content = mainView;
+            window.Content = mainView;
+                window.Closed += (s, e) => {
+                    Logger.WriteDebug(this, "Window Closed");
+                };
                 window.ShowDialog();
             });
 
             // Change the thread to be Single Threaded Apartment for the window to show.
             windowThread.SetApartmentState(ApartmentState.STA);
+            Logger.WriteDebug(this, "Starting Thread");
+
             windowThread.Start();
 
+            Logger.WriteDebug(this, "Keeping Thread alive while the Window is open...");
             while (windowThread.IsAlive) {
                 // wait for the thread to be finished
                 Thread.Sleep(100);
             }
+            Logger.WriteDebug(this, "Stopping Thread");
 
         }
 
@@ -163,10 +167,19 @@ namespace Sybrin.XDisplayForm {
             //  * PresentationFramework
             //  * System.Xaml
             //  * WindowsBase
-            if (Application.Current == null) {
-                new Application() {
-                    ShutdownMode = ShutdownMode.OnExplicitShutdown
-                };
+            try {
+
+                if (Application.Current == null) {
+                    Logger.WriteDebug(this, "Application is null, attempting to create an instance...");
+                    new Application() {
+                        ShutdownMode = ShutdownMode.OnExplicitShutdown
+                    };
+                    Logger.WriteDebug(this, "Application Created.");
+                }
+            } catch (Exception ex) {
+                var newEx = new Exception("Failed to create an instance of the Application", ex);
+                Logger.WriteError(this, newEx);
+                throw newEx;
             }
 
         }
