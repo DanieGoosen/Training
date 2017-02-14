@@ -12,7 +12,7 @@ using Sybrin.XDisplayForm.ViewModels;
 
 namespace Sybrin.XDisplayForm {
     [Export("Sybrin.XDisplayForm", typeof(IXProcess))]
-    [ExportMetadata("Description", "My XProcess")]
+    [ExportMetadata("Description", "DisplayForm XProcess")]
     public class XProcess : XProcessBase {
         #region Constructors
 
@@ -124,22 +124,36 @@ namespace Sybrin.XDisplayForm {
 
             // Start an instance of System.Windows.Application if it doesnt already exist.
             startApplication();
+            var windowThread = createThread(ApartmentState.STA);
+
+            Logger.WriteDebug(this, "Starting Thread");
+            windowThread.Start();
+
+            keepAlive(windowThread);
+        }
+
+        private void keepAlive(Thread windowThread) {
+            Logger.WriteDebug(this, "Keeping Thread alive while the Window is open...");
+            while (windowThread.IsAlive) {
+                // wait for the thread to be finished
+                Thread.Sleep(100);
+            }
+            Logger.WriteDebug(this, "Thread Stopped");
+        }
+
+        private Thread createThread(ApartmentState apartmentState) {
+
             Logger.WriteDebug(this, "Creating Window (STA) Thread...");
             Thread windowThread = new Thread(() => {
-            // Create an instance of a new window.
-            Window window = new Window();
-            window.Width = 800;
-            window.Height = 600;
-            // This window needs some content, WPF Knowledge is applied here to 
-            // add an existing component as content, together with a binding to 
-            // its datacontext.
-            var mainView = new MainView();
-
-            var mainVM = new MainVM() { Title = "Binding Works!" };
-
-            mainView.DataContext = mainVM;
-
-            window.Content = mainView;
+                // Create an instance of a new window.
+                var window = new MainWindow();
+                // This window needs some content, WPF Knowledge is applied here to 
+                // add an existing component as content, together with a binding to 
+                // its datacontext.
+                var mainVM = new MainVM() { Title = "Title set through the DataContext of the View (Binding Works!)" };
+                window.DataContext = mainVM;
+                
+                // Subscribe to the Closed event of the Window and handle any disposing of objects, logging, etc.
                 window.Closed += (s, e) => {
                     Logger.WriteDebug(this, "Window Closed");
                 };
@@ -148,17 +162,7 @@ namespace Sybrin.XDisplayForm {
 
             // Change the thread to be Single Threaded Apartment for the window to show.
             windowThread.SetApartmentState(ApartmentState.STA);
-            Logger.WriteDebug(this, "Starting Thread");
-
-            windowThread.Start();
-
-            Logger.WriteDebug(this, "Keeping Thread alive while the Window is open...");
-            while (windowThread.IsAlive) {
-                // wait for the thread to be finished
-                Thread.Sleep(100);
-            }
-            Logger.WriteDebug(this, "Stopping Thread");
-
+            return windowThread;
         }
 
         private void startApplication() {

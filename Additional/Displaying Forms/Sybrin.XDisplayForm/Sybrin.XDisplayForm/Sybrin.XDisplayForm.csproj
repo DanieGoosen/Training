@@ -122,6 +122,9 @@
     <Compile Include="Base Classes\BaseViewModel.cs" />
     <Compile Include="Tools\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,10 @@
     <None Include="PostBuildEvents.bat" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
