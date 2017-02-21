@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Configure|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>$(MSBuildProjectDirectory)\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(OutputPath)ConfigureService.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>$(MSBuildProjectDirectory)\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(OutputPath)Sybrin10.WindowsService.exe</StartProgram>
+    <StartArguments>-d</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{7C03FDD7-4E64-48F9-B58D-A38400195C4B}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\Jenkins\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Sybrin.AllEditors</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BitMiracle.LibTiff.NET">
+      <HintPath>..\packages\Sybrin\BitMiracle.LibTiff.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ConfigureApplication">
+      <HintPath>..\packages\Sybrin\ConfigureApplication.exe</HintPath>
+    </Reference>
+    <Reference Include="ConfigureService">
+      <HintPath>..\packages\Sybrin\ConfigureService.exe</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Sybrin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Sybrin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin.Bridge.Master">
+      <HintPath>..\packages\Sybrin\Sybrin.Bridge.Master.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin.Client">
+      <HintPath>..\packages\Sybrin\Sybrin.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin.Common">
+      <HintPath>..\packages\Sybrin\Sybrin.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin.Dynamic">
+      <HintPath>..\packages\Sybrin\Sybrin.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin.Extensions">
+      <HintPath>..\packages\Sybrin\Sybrin.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin10.Dynamic">
+      <HintPath>..\packages\Sybrin\Sybrin10.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin10.Kernel">
+      <HintPath>..\packages\Sybrin\Sybrin10.Kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin10.Logger">
+      <HintPath>..\packages\Sybrin\Sybrin10.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="Sybrin10.WindowsService">
+      <HintPath>..\packages\Sybrin\Sybrin10.WindowsService.exe</HintPath>
+    </Reference>
+    <Reference Include="Sybrin10.XProcess.Service">
+      <HintPath>..\packages\Sybrin\Sybrin10.XProcess.Service.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Xceed.Compression">
+      <HintPath>..\packages\Sybrin\Xceed.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Compression.Formats">
+      <HintPath>..\packages\Sybrin\Xceed.Compression.Formats.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="XProcesses\XProcess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XProcesses\XProcessProperties.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base Classes\" />
+    <Folder Include="Data\" />
+    <Folder Include="Forms\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Tools\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationRequirements.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServiceInstall.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SybrinPackageManager.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PostBuildEvents.bat" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if /I "$(ConfigurationName)" == "Debug" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
+if /I "$(ConfigurationName)" == "Configure" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\SDKs\Sybrin10" "C:\SDKs\Sybrin7" 
+if /I "$(ConfigurationName)" == "Release" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "X:\Sybrin10" "X:\Sybrin7" 
+if /I "$(ConfigurationName)" == "Jenkins" "$(ProjectDir)SybrinPackageManager.exe" /p "$(ProjectPath) " /s "$(SolutionDir) " /g "C:\Jenkins\Sybrin10" "C:\Jenkins\Sybrin7" /v
+</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>rem $(ProjectDir)PostBuildEvents.bat "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

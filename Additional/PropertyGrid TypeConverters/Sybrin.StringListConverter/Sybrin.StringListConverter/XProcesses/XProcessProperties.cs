@@ -46,7 +46,7 @@ namespace Sybrin.StringListConverter {
         [Category("1 - General"), Description("Sets the value selected from a custom dropdown.")]
         [DefaultValue("")]
         [DisplayName("2 - Custom List Dropdown")]
-        [TypeConverter(typeof(MyConverter))]
+        [TypeConverter(typeof(MyConverter))]    // Use your Custom TypeConverter over here to change behaviour on the PropertyGrid.
         public string ListValue {
             [DebuggerNonUserCode]
             get { return this.listValue; }
