@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sybrin.ImageSelectorEditor", "Sybrin.ImageSelectorEditor\Sybrin.ImageSelectorEditor.csproj", "{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{F193BDAA-4D2D-4B92-84CB-42A141322486}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Configure|Any CPU = Configure|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Jenkins|Any CPU = Jenkins|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Configure|Any CPU.ActiveCfg = Configure|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Configure|Any CPU.Build.0 = Configure|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12C82A9-FE9A-46E1-A8B1-39B189A7417B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Configure|Any CPU.ActiveCfg = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Configure|Any CPU.Build.0 = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Jenkins|Any CPU.ActiveCfg = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Jenkins|Any CPU.Build.0 = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F193BDAA-4D2D-4B92-84CB-42A141322486}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
