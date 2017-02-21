@@ -96,7 +96,7 @@ namespace Sybrin.AllEditors {
         /// </summary>
         [Category("1 - General"), Description("Sets the ConnectionStringBuilderEditor Editor [Sybrin10.Kernel.Attributes.ConnectionStringBuilderEditor]")]
         [DefaultValue("")]
-        [DisplayName("4.5.1 - ConnectionStringBuilderEditor")]
+        [DisplayName("4.5 - ConnectionStringBuilderEditor")]
         [Editor(typeof(ConnectionStringBuilderEditor), typeof(UITypeEditor))]
         public string ConnectionStringBuilderEditor {
             get { return this.connectionStringBuilderEditor; }
@@ -107,47 +107,13 @@ namespace Sybrin.AllEditors {
             }
         }
 
-        private string connectionStringEditor = "";
-        /// <summary>
-        /// Gets or sets the ConnectionStringEditor Editor [Sybrin10.Attributes.Editors.ConnectionStringEditor]
-        /// </summary>
-        [Category("1 - General"), Description("Sets the ConnectionStringEditor Editor [Sybrin10.Attributes.Editors.ConnectionStringEditor]")]
-        [DefaultValue("")]
-        [DisplayName("4.5.2 - ConnectionStringEditor")]
-        [Editor(typeof(ConnectionStringEditor), typeof(UITypeEditor))]
-        public string ConnectionStringEditor {
-            get { return this.connectionStringEditor; }
-            set {
-                if (this.connectionStringEditor != value) {
-                    this.connectionStringEditor = value;
-                }
-            }
-        }
-
-        private System.Drawing.Color colorEditor = default(System.Drawing.Color);
-        /// <summary>
-        /// Gets or sets the ColorEditor Editor [Sybrin10.Kernel.Attributes.ColorEditor]
-        /// </summary>
-        [Category("1 - General"), Description("Sets the ColorEditor Editor [Sybrin10.Kernel.Attributes.ColorEditor]")]
-        [DefaultValue("")]
-        [DisplayName("4.6.1 - ColorEditor")]
-        [Editor(typeof(Sybrin10.Kernel.Attributes.ColorEditor), typeof(UITypeEditor))]
-        public System.Drawing.Color ColorEditor {
-            get { return this.colorEditor; }
-            set {
-                if (this.colorEditor != value) {
-                    this.colorEditor = value;
-                }
-            }
-        }
-
         private System.Drawing.Color colorEditor2 = default(System.Drawing.Color);
         /// <summary>
         /// Gets or sets the ColorEditor Editor [Sybrin10.Kernel.Attributes.ColorEditor]
         /// </summary>
         [Category("1 - General"), Description("Sets the ColorEditor Editor [System.Drawing.Design.ColorEditor]")]
         [DefaultValue("")]
-        [DisplayName("4.6.2 - ColorEditor")]
+        [DisplayName("4.6 - ColorEditor")]
         [Editor(typeof(System.Drawing.Design.ColorEditor), typeof(UITypeEditor))]
         public System.Drawing.Color ColorEditor2 {
             get { return this.colorEditor2; }
