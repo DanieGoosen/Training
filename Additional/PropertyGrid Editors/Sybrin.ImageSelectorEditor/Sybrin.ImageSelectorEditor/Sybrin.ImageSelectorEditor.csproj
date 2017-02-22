@@ -123,6 +123,7 @@
     <Compile Include="Base Classes\ViewModelBase.cs" />
     <Compile Include="Editors\ImageEditor.cs" />
     <Compile Include="Models\ImageModel.cs" />
+    <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="Views\MainView.xaml.cs">

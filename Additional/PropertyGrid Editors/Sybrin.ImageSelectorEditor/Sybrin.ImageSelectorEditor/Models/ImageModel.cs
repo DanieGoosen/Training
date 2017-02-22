@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -14,12 +15,45 @@ namespace Sybrin.ImageSelectorEditor {
                 this.ImageData = Convert.FromBase64String(ImageString);
             }
         }
+       
+        private bool isVisible = true;
+        /// <summary>
+        /// Gets or sets the Visibility of the Image
+        /// </summary>
+        [JsonIgnore, XmlIgnore]
+        [Browsable(false)]
+        public bool IsVisible {
+            get { return this.isVisible; }
+            set {
+                if (this.isVisible != value) {
+                    this.isVisible = value;
+                    SetPropertyChanged("IsVisible");
+                }
+            }
+        }
+
+        private bool isSelected = false;
+        /// <summary>
+        /// Gets or sets the Whether the image is selected or not
+        /// </summary>
+        [JsonIgnore, XmlIgnore]
+        [Browsable(false)]
+        public bool IsSelected {
+            get { return this.isSelected; }
+            set {
+                if (this.isSelected != value) {
+                    this.isSelected = value;
+                    SetPropertyChanged("IsSelected");
+                }
+            }
+        }
+
 
         private string imageString = "";
         /// <summary>
         /// Gets or sets the Base64 string that will represent the ByteArray of the Image, to save to the Application.saf file.
         /// </summary>
-
+        [Browsable(false)]
         public string ImageString {
             get {
                 return this.imageString;
@@ -41,6 +75,7 @@ namespace Sybrin.ImageSelectorEditor {
         // Add these attributes to ignore saving the bytes to the Applicaiton.saf, as the byte array does not save properly.
         // Convert the byteArray to Base64 and rather save that string, and convert the Base64 string to a byteArray when loaded.
         [JsonIgnore, XmlIgnore]
+        [Browsable(false)] // Dont want to be able to see this when browsing to the image.
         public byte[] ImageData {
             get {
                 if (this.imageData == null && this.imageString != "") {
@@ -58,7 +93,7 @@ namespace Sybrin.ImageSelectorEditor {
         /// <summary>
         /// Gets or sets the Name of the File
         /// </summary>
-
+        [ReadOnly(true)]
         public string Name {
             get { return this.name; }
             set {
@@ -73,13 +108,12 @@ namespace Sybrin.ImageSelectorEditor {
             var imageFormat = determineImage(path);
             var image = Image.FromFile(path);
 
+
             ImageData = imageToByteArray(image, imageFormat);
             ImageString = Convert.ToBase64String(imageData);
             Name = Path.GetFileNameWithoutExtension(path);
         }
-
-
-
+        
         private ImageFormat determineImage(string path) {
             var extension = Path.GetExtension(path).Replace(".", "");
             var imageFormat = ImageFormat.Jpeg;
@@ -114,6 +148,9 @@ namespace Sybrin.ImageSelectorEditor {
             return returnImage;
         }
 
+        public override string ToString() {
+            return $"{Name} - {ImageData.LongLength / 1024} KB";
+        }
     }
 
     public class ImageModels : ObservableCollection<ImageModel> {

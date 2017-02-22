@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Sybrin.ImageSelectorEditor.Tools;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -85,21 +86,36 @@ namespace Sybrin.ImageSelectorEditor {
         }
 
         public void RemoveImage(object obj) {
-            if (MessageBox.Show($"Are you sure you want to remove Image '{SelectedImage.Name}'", "Delete Image?", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                Images.Remove(SelectedImage);
+            var selectedImages = this.Images.Where(i => i.IsSelected);
+            int count = selectedImages.Count();
+            var message = count == 1 ? $"Are you sure you want to remove Image '{SelectedImage.Name}'" : $"Are you sure you want to remove {count} Images?";
+            if (MessageBox.Show(message, "Delete Image(s)?", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                if (count > 1) {
+                    Images.RemoveAll(i => i.IsSelected);
+                } else {
+                    Images.Remove(SelectedImage);
+                }
                 SelectedImage = null;
             }
         }
 
-
-
         public void AddImage(object obj) {
-            var fileBrowser = new System.Windows.Forms.OpenFileDialog() { Multiselect = false };
+            var fileBrowser = new System.Windows.Forms.OpenFileDialog() { Multiselect = true };
             if (fileBrowser.ShowDialog() == DialogResult.OK) {
-                var image = new ImageModel();
-                image.SetImage(fileBrowser.FileName);
-                Images.Add(image);
-                SelectedImage = image;
+                foreach(var file in fileBrowser.FileNames) {
+                    try {
+                        var image = new ImageModel();
+                        image.SetImage(file);
+                        Images.Add(image);
+                        SelectedImage = image;
+                    } catch (NotSupportedException) {
+                        continue;
+                    }
+                    catch (Exception ex) {
+                        MessageBox.Show($"Failed to Select the Image(s) from the FileDialog: {ex.Message}");
+                    }
+                };
+                
             }
         }
 
